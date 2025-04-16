@@ -1,0 +1,79 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              09/17/2024 16:40:04 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\Keil uVision5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listing
+                    -s\main.lst) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "LCD1602.h"
+   3          #include "MatrixKey.h"
+   4          
+   5          unsigned char KeyNum;
+   6          unsigned int Password,Count;
+   7          
+   8          void main()
+   9          {
+  10   1          LCD_Init();
+  11   1          LCD_ShowString(1,1,"Password:");
+  12   1          while(1)
+  13   1          {
+  14   2              KeyNum=MatrixKey();
+  15   2              if(KeyNum)
+  16   2              {
+  17   3                  if(KeyNum<=10)  //如果s1~s10按键按下，输入密码
+  18   3                  {
+  19   4                      if(Count<4)
+  20   4                      {
+  21   5                      Password*=10;          //密码左移一位
+  22   5                      Password+=KeyNum%10;   //获取一位密码
+  23   5                      Count++;
+  24   5                      }
+  25   4                      LCD_ShowNum(2,1,Password,4);  //更新显示
+  26   4                  }
+  27   3                  if(KeyNum==11)  //如果s11按键按下，确认
+  28   3                  {
+  29   4                      if(Password==4536)
+  30   4                      {
+  31   5                          LCD_ShowString(1,13," OK!");
+  32   5                          Password=0;
+  33   5                          Count=0;
+  34   5                          LCD_ShowNum(2,1,Password,4);
+  35   5                      }
+  36   4                      else
+  37   4                      {
+  38   5                          LCD_ShowString(1,13,"ERR!");
+  39   5                          Password=0;
+  40   5                          Count=0;     
+  41   5                          LCD_ShowNum(2,1,Password,4);                    
+  42   5                      }
+  43   4                  }
+  44   3                  if(KeyNum==12)  //如果s12按键按下，取消
+  45   3                  {
+  46   4                      LCD_Init();
+  47   4                      Password=0;
+  48   4                      Count=0;
+  49   4                      LCD_ShowString(1,1,"Password:");
+  50   4                  }
+  51   3              }
+  52   2          }
+  53   1      }
+
+C51 COMPILER V9.60.7.0   MAIN                                                              09/17/2024 16:40:04 PAGE 2   
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    192    ----
+   CONSTANT SIZE    =     20    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      5    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
